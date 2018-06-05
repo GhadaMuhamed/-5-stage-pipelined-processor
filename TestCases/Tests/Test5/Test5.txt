@@ -1,0 +1,51 @@
+5
+220
+
+;data segment
+5
+12
+3
+
+
+
+LDM R2, 20
+LDM R5, 100
+LDM R1, 50
+ADD R1, R0        ;R0 = 50d , CCR=VCNZ=0000
+SUB R3, R1         ;R1 = -50d , n=1
+JN R5
+CLRC
+INC R2             ;R2 =  32758
+DEC R2             ;R2 = 32747
+
+LDD R4, 3 ;R4<=12
+STD R4, 7    ;mem[7]=12
+LDM R5, 170
+CALL R5
+OUT R4 ;
+IN  R2 ;r2<=12
+
+
+.100
+SETC
+RRC R2             ;R2 =  1000000000010100 -32578-> unsigned
+NOT R2             ;R2 =  0111111111101011 32757
+SETC
+LDM R3, 14
+JC R3
+
+
+.170
+RLC R2             ;R2 = 111111111101011  CCR=VCNZ=0000
+SUB R2, R2	       ;R2 = 0d, CCR=VCNZ=0001
+MOV R2, R5         ;R5<=0
+LDM R5,3
+PUSH R5
+POP R2 ;R<=3
+NOP
+RET
+
+.220
+SHL R5, 2, R3 ;r3<= 12
+SHR R3, 20, R3; r3<0
+RETI

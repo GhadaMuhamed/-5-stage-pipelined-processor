@@ -1,0 +1,30 @@
+2                   ;the program starts at address 2
+125                 ;ISR address
+
+
+LDM R0,15
+LDM R1,30
+LDM R2,75
+JMP R0               ;Branch to address 15, PC=15
+SUB R2, R1   
+
+.15	            ;go to adrress 15	    
+SUB R0, R0          ;R0=0, Z=1
+JZ R1             ;Branch taken, PC=30
+SUB R2, R1          
+
+.30
+SUB R2, R1          ;R1=45, N=0 , r2<=
+JN R0             ;Branch Not Taken!
+CALL R1           ;Mem[255]=PC+1=33, R3(SP)=254, PC=45
+ADD R0, R1          ;R1<=45
+
+
+.45
+ADD R1 , R0         ;R0<=45+
+RET                 ;PC=33, R3(SP)=255
+
+
+
+.125                
+RTI

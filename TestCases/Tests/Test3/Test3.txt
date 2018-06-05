@@ -1,0 +1,36 @@
+5             ;the program starts at address 5
+100           ;ISR address
+
+;data segment
+10
+20
+31
+40
+50
+60
+70
+
+LDD R1,3  ;R1=20
+LDD R2,4  ;R2=31
+ADD R2,R1 ;R1=51
+SHL R1,10,R2 ;R2=52224
+ADD R2,R0 ;R0=52224
+MUL R0,R1 ; r0=40 , r1=41984
+STD R0,5 ;M[5]=40
+STD R1,4  ;M[4]=50
+PUSH R2   ;M[1023]=52224 Sp=1022 assume von Neumann arch
+PUSH R1   ;M[1022]=41984 Sp=1021
+LDD R1,0  ;R1=5
+LDD R2,1  ;R2=100
+ADD R2,R1 ;R1=105
+POP R1    ;R1=41984
+POP R2    ;R2=52224
+
+.100
+SETC
+LDM R1,5
+LDM R2,5
+SUB R1,R2
+RTI
+
+
